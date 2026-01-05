@@ -1,0 +1,380 @@
+/* ========================================
+   WINTER MAGIC - Минималистичный стиль
+   ======================================== */
+
+/* Контейнер для снежинок */
+.winter-magic-snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2147483646;
+  overflow: hidden;
+}
+
+/* Снежинка */
+.winter-magic-snowflake {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0.8) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(0.3px);
+  will-change: transform;
+}
+
+/* ========================================
+   ГИРЛЯНДА
+   ======================================== */
+
+.winter-magic-garland {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  pointer-events: none;
+  z-index: 2147483645;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.winter-magic-garland-wire {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #1a1a1a 3%, #1a1a1a 97%, transparent 100%);
+}
+
+.winter-magic-garland-lights {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.winter-magic-bulb {
+  position: relative;
+  width: 12px;
+  height: 16px;
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  margin-top: 4px;
+  animation: wmGlow 2s ease-in-out infinite;
+}
+
+.winter-magic-bulb::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 4px;
+  background: #333;
+  border-radius: 1px 1px 0 0;
+}
+
+.winter-magic-bulb.red {
+  background: radial-gradient(ellipse at 30% 25%, #ff8a8a, #e60000);
+  box-shadow: 0 0 8px #ff0000, 0 0 15px rgba(255,0,0,0.5);
+}
+.winter-magic-bulb.blue {
+  background: radial-gradient(ellipse at 30% 25%, #8ab8ff, #0055e6);
+  box-shadow: 0 0 8px #0066ff, 0 0 15px rgba(0,102,255,0.5);
+}
+.winter-magic-bulb.yellow {
+  background: radial-gradient(ellipse at 30% 25%, #fff08a, #e6b800);
+  box-shadow: 0 0 8px #ffcc00, 0 0 15px rgba(255,204,0,0.5);
+}
+.winter-magic-bulb.green {
+  background: radial-gradient(ellipse at 30% 25%, #8aff8a, #00b300);
+  box-shadow: 0 0 8px #00cc00, 0 0 15px rgba(0,204,0,0.5);
+}
+
+@keyframes wmGlow {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.6; filter: brightness(0.7); }
+}
+
+.winter-magic-bulb:nth-child(4n+1) { animation-delay: 0s; }
+.winter-magic-bulb:nth-child(4n+2) { animation-delay: 0.25s; }
+.winter-magic-bulb:nth-child(4n+3) { animation-delay: 0.5s; }
+.winter-magic-bulb:nth-child(4n) { animation-delay: 0.75s; }
+
+.winter-magic-garland.no-blink .winter-magic-bulb {
+  animation: none;
+  opacity: 1;
+}
+
+/* ========================================
+   ОВЕРЛЕЙ
+   ======================================== */
+
+.winter-magic-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 2147483646;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.winter-magic-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========================================
+   МЕНЮ — Минималистичный дизайн
+   ======================================== */
+
+.winter-magic-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: 280px;
+  background: #1c1c1e;
+  border-radius: 14px;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  color: #fff;
+}
+
+.winter-magic-menu.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Шапка */
+.wm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.wm-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.wm-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.wm-close:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Контент */
+.wm-content {
+  padding: 12px 16px;
+}
+
+/* Секция */
+.wm-section {
+  margin-bottom: 4px;
+}
+
+.wm-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+}
+
+/* Разделитель */
+.wm-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 8px 0 12px;
+}
+
+/* Контрол */
+.wm-control {
+  margin-bottom: 12px;
+}
+
+.wm-control > span {
+  display: block;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+
+.wm-control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.wm-control-header span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+}
+
+.wm-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0a84ff;
+}
+
+.wm-control.wm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wm-control.wm-row > span {
+  margin-bottom: 0;
+}
+
+/* Toggle */
+.wm-toggle {
+  position: relative;
+  width: 42px;
+  height: 26px;
+  background: #39393d;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.wm-toggle.active {
+  background: #30d158;
+}
+
+.wm-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.wm-toggle.active .wm-toggle-knob {
+  transform: translateX(16px);
+}
+
+/* Слайдер */
+.wm-slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #39393d;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.wm-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.1s ease;
+}
+
+.wm-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.wm-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Табы */
+.wm-tabs {
+  display: flex;
+  background: #39393d;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.wm-tab {
+  flex: 1;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wm-tab:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+.wm-tab.active {
+  background: #636366;
+  color: #fff;
+}
+
+/* Футер */
+.wm-footer {
+  padding: 10px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.wm-hotkey {
+  font-size: 11px;
+  font-family: SF Mono, Monaco, monospace;
+  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.05);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
