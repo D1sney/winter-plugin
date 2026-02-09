@@ -34,6 +34,11 @@
   let overlayElement = null;
   let animationId = null;
   let lastSpawnTime = 0;
+  let isPageVisible = true;
+
+  // Константы оптимизации
+  const MAX_SNOWFLAKES = 200;
+  const MAX_SNOWFLAKE_LIFETIME = 20000; // 20 секунд
 
   // ==========================================
   // ХРАНИЛИЩЕ НАСТРОЕК
@@ -102,6 +107,9 @@
   function createSnowflake() {
     if (!settings.snow.enabled || !snowContainer) return null;
 
+    // Лимит снежинок
+    if (snowflakes.length >= MAX_SNOWFLAKES) return null;
+
     const snowflake = document.createElement('div');
     snowflake.className = 'winter-magic-snowflake';
 
@@ -116,7 +124,8 @@
       speed: random(speedRange.min, speedRange.max),
       wobble: random(0, Math.PI * 2),
       wobbleSpeed: random(0.02, 0.05),
-      opacity: random(0.5, 1)
+      opacity: random(0.5, 1),
+      birthTime: performance.now()
     };
 
     snowflake.style.cssText = `
@@ -137,8 +146,8 @@
       return;
     }
 
-    // Создаём новые снежинки
-    if (timestamp - lastSpawnTime > getSpawnInterval()) {
+    // Создаём новые снежинки (только если страница видима)
+    if (isPageVisible && timestamp - lastSpawnTime > getSpawnInterval()) {
       const flake = createSnowflake();
       if (flake) snowflakes.push(flake);
       lastSpawnTime = timestamp;
@@ -155,8 +164,12 @@
 
       flake.element.style.transform = `translate(${wobbleX}px, ${flake.y}px)`;
 
-      // Удаляем снежинки за пределами экрана
-      if (flake.y > window.innerHeight + 10) {
+      const age = timestamp - flake.birthTime;
+
+      // Удаляем снежинки если:
+      // 1. За пределами экрана
+      // 2. Слишком старые (живут больше MAX_SNOWFLAKE_LIFETIME)
+      if (flake.y > window.innerHeight + 10 || age > MAX_SNOWFLAKE_LIFETIME) {
         flake.element.remove();
         snowflakes.splice(i, 1);
       }
@@ -489,6 +502,17 @@
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.winterMagicSettings?.newValue) {
         applySettings(changes.winterMagicSettings.newValue);
+      }
+    });
+
+    // Page Visibility API — отслеживаем когда вкладка становится активной/неактивной
+    document.addEventListener('visibilitychange', () => {
+      isPageVisible = !document.hidden;
+
+      // При возврате на вкладку сбрасываем lastSpawnTime
+      // чтобы избежать массового спавна из-за большой разницы в timestamp
+      if (isPageVisible) {
+        lastSpawnTime = performance.now();
       }
     });
   }
